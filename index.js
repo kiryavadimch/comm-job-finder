@@ -19,10 +19,12 @@ const articleRouter = require('./routers/article');
 const vacancyRouter = require('./routers/vacancy');
 const helpRouter = require('./routers/help')
 const filesRouter = require('./routers/files')
+const sportVacancyRouter = require('./routers/sportvacancy');
 
 app.use('/auth', authRouter);
 app.use('/articles', articleRouter);
 app.use('/vacancy', vacancyRouter);
+app.use('/sportVacancy', sportVacancyRouter);
 app.use('/help', helpRouter)
 app.use('/files', filesRouter)
 

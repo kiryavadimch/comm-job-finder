@@ -27,6 +27,7 @@ const Company = new Schema({
   zipCode: Number,
 
   vacancies: [{type: ObjectId, ref: 'Vacancy'}],
+  sportVacancies: [{type: ObjectId, ref: 'SportVacancy'}],
 
   // subscriptions: [
   //   {
