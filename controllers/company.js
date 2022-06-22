@@ -71,6 +71,7 @@ class authController {
       const company = new Company({
         name,
         email,
+        howMuchFilled: 10,
         password: passwordHashed,
         emailToken: token,
       });
@@ -208,6 +209,37 @@ class authController {
       user.password = password;
       await user.save()
       res.status(200).json({ success: true })
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ error: e.message })
+    }
+  }
+
+  async addProfileInfo(req, res) {
+    try {
+      var count = 0;
+      req.company.set(req.body)
+      Object.keys(req.company.toObject()).forEach((key) => {
+        if (typeof (req.company[key]) === 'string' || req.company[key] instanceof String) {
+          if (req.company[key] !== null && req.company[key].trim() !== '') {
+            count++;
+          }
+        } else if (req.company[key] !== null) {
+          count++;
+        }
+      })
+      req.company.howMuchFilled = count / (Object.keys(req.company.toObject()).length) * 100
+      await req.company.save()
+      res.status(200).json({ success: true, result: req.company })
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ error: e.message })
+    }
+  }
+
+  async getProfileInfo(req, res) {
+    try {
+      res.status(200).json({})
     } catch (e) {
       console.log(e)
       res.status(500).json({ error: e.message })
