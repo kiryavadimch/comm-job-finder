@@ -17,9 +17,10 @@ const Company = new Schema({
   websites: [String],
 
   description: String,
+  howMuchFilled: Number,
 
-  //   industry: { industryId: ObjectId, ref: 'Industry' },
-  //   companyType: { companyTypeId: ObjectId, ref: 'CompanyType' },
+  industry: String,//   industry: { industryId: ObjectId, ref: 'Industry' },
+  companyType: String, //   companyType: { companyTypeId: ObjectId, ref: 'CompanyType' },
   address: String,
   addressLine2: String,
   city: String,
