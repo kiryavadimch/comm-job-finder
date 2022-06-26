@@ -20,7 +20,9 @@ const vacancyRouter = require('./routers/vacancy');
 const helpRouter = require('./routers/help')
 const filesRouter = require('./routers/files')
 const sportVacancyRouter = require('./routers/sportvacancy');
+const profileRouter = require('./routers/profile')
 
+app.use('/profile', profileRouter)
 app.use('/auth', authRouter);
 app.use('/articles', articleRouter);
 app.use('/vacancy', vacancyRouter);

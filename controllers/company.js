@@ -218,19 +218,24 @@ class authController {
   async addProfileInfo(req, res) {
     try {
       var count = 0;
-      req.company.set(req.body)
-      Object.keys(req.company.toObject()).forEach((key) => {
-        if (typeof (req.company[key]) === 'string' || req.company[key] instanceof String) {
-          if (req.company[key] !== null && req.company[key].trim() !== '') {
+      let company = await Company.findOne({ email: req.company.email }, '-__v -password -verified -vacancies -verified -sportVacancies')
+        .select({ "emailToken": 0, "id": 0 });
+      company.set(req.body)
+      const jsObj = company.toObject()
+      delete jsObj.emailToken
+      delete jsObj._id
+      Object.keys(jsObj).forEach((key) => {
+        if (typeof (jsObj[key]) === 'string' || jsObj[key] instanceof String) {
+          if (jsObj[key] !== null && jsObj[key].trim() !== '') {
             count++;
           }
-        } else if (req.company[key] !== null) {
+        } else if (jsObj[key] !== null) {
           count++;
         }
       })
-      req.company.howMuchFilled = count / (Object.keys(req.company.toObject()).length) * 100
-      await req.company.save()
-      res.status(200).json({ success: true, result: req.company })
+      company.howMuchFilled = count / (Object.keys(jsObj).length) * 100
+      const result = await company.save()
+      res.status(200).json({ success: true, result: result })
     } catch (e) {
       console.log(e)
       res.status(500).json({ error: e.message })
