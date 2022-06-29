@@ -228,7 +228,11 @@ class authController {
           count++;
         }
       })
-      req.company.howMuchFilled = count / (Object.keys(req.company.toObject()).length) * 100
+      req.company.howMuchFilled = count / (Object.keys(req.company.toObject()).length) * 
+      /* telephone(str) {
+        let phone = /^(1\s?)?(\d{3}|\(\d{3}\))[\-\s]?\d{3}[\-\s]?\d{4}$/
+        return phone.test.(str)  
+      }*/
       await req.company.save()
       res.status(200).json({ success: true, result: req.company })
     } catch (e) {
@@ -239,7 +243,8 @@ class authController {
 
   async getProfileInfo(req, res) {
     try {
-      res.status(200).json({})
+      const result = await Company.find({},"-__v -password -verified -resetLink -emailToken -favorites -_id -vacancies -sportVacancies")
+      res.status(200).json({result: result})
     } catch (e) {
       console.log(e)
       res.status(500).json({ error: e.message })

@@ -213,6 +213,40 @@ class authController {
       res.status(500).json({ error: e.message })
     }
   }
+
+
+    async addProfileInfo(req, res) {
+      try {
+        var count = 0;
+        req.volunteer.set(req.body)
+        Object.keys(req.volunteer.toObject()).forEach((key) => {
+          if (typeof (req.volunteer[key]) === 'string' || req.volunteer[key] instanceof String) {
+            if (req.volunteer[key] !== null && req.volunteer[key].trim() !== '') {
+              count++;
+            }
+          } else if (req.volunteer[key] !== null) {
+            count++;
+          }
+        })
+        req.volunteer.howMuchFilled = count / (Object.keys(req.volunteer.toObject()).length) * 100
+        await req.volunteer.save()
+        res.status(200).json({ success: true   })
+      } catch (e) {
+        console.log(e)
+        res.status(500).json({ error: e.message })
+      }
+    }
+  
+    async getProfileInfo(req, res) {
+      try {
+        const result = await Volunteer.find({},"-__v -password -verified -resetLink -emailToken -favorites -_id ")
+        res.status(200).json({result: result})
+      } catch (e) {
+        console.log(e)
+        res.status(500).json({ error: e.message })
+      }
+    }
+
 }
 
 module.exports = new authController();

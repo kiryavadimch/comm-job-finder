@@ -43,7 +43,12 @@ class sportvacancyController {
 
   async getVacancies(req, res) {
     try {
-      const vacancies = await SportVacancy.find({ /**status: 'Active' */ });
+      const limit = parseInt(req.query.limit);
+      const skip = parseInt(req.query.skip);
+      if (!skip || !limit) {
+        res.status(400).json({ error: 'Internal error' })
+      }
+      const vacancies = await SportVacancy.find({ /**status: 'Active' */ }).skip(skip).limit(limit);
       res.status(200).json({ result: vacancies });
     } catch (e) {
       console.log(e);
@@ -51,7 +56,7 @@ class sportvacancyController {
     }
   }
 
-  async getVacanciesWithDraws(req, res) {
+  async getSportVacanciesWithDraws(req, res) {
     try {
       const vacancies = await SportVacancy.find({});
       res.status(200).json({ result: vacancies });

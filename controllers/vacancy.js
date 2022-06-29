@@ -43,7 +43,13 @@ class vacancyController {
 
   async getVacancies(req, res) {
     try {
-      const vacancies = await Vacancy.find({ status: 'Active' });
+      const limit = parseInt(req.query.limit);
+      const skip = parseInt(req.query.skip);
+      if (!skip || !limit) {
+        res.status(400).json({ error: 'Internal error' })
+      }
+      const vacancies = await Vacancy.find({ status: 'Active' }).skip(skip).limit(limit)
+
       res.status(200).json({ result: vacancies });
     } catch (e) {
       console.log(e);
@@ -144,6 +150,15 @@ class vacancyController {
       res.status(500).json({ error: e.message })
     }
   }
+
 }
+// class vacancyPagination {
+//   getAll(limit = 0, skip = 0) {
+//       return vacancy.find({})  // You may want to add a query
+//                       .skip(skip) // Always apply 'skip' before 'limit'
+//                       .limit(limit) // This is your 'page size'
+//   } 
+// } 
+
 
 module.exports = new vacancyController();

@@ -3,10 +3,10 @@ const { Schema, model, ObjectId } = require('mongoose');
 const Volunteer = new Schema({
   name: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  verified: Boolean,
-  resetLink: String,
-  emailToken: String,
+  password: { type: String, required: true },//-
+  verified: Boolean,//-
+  resetLink: String,//-
+  emailToken: String,//-
 
   avatar: String,
   headline: String,
@@ -14,8 +14,8 @@ const Volunteer = new Schema({
   willingRelocate: Boolean,
   workRemotely: Boolean,
 
-  favorites: [{ type: ObjectId, ref: 'Vacancy'}],
-  isVisible: Boolean,
+  favorites: [{ type: ObjectId, ref: 'Vacancy'}], //-
+  isVisible: Boolean,//-
 
   phone: { type: String, unique: true },
   websites: [String],
