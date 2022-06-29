@@ -39,8 +39,13 @@ const vacancyRouter = require('./routers/vacancy');
 const helpRouter = require('./routers/help')
 const filesRouter = require('./routers/files')
 const sportVacancyRouter = require('./routers/sportvacancy');
-const profileRouter = require('./routers/profile');
 
+const profileRouter = require('./routers/profile')
+const subscriptionsRouter = require('./routers/subscriptions')
+
+
+app.use('/subscriptions', subscriptionsRouter)
+app.use('/profile', profileRouter)
 app.use('/auth', authRouter);
 app.use('/articles', articleRouter)
 app.use('/vacancy', vacancyRouter) 
