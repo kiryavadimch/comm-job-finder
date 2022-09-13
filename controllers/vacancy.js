@@ -1,3 +1,4 @@
+const vacancy = require('../models/vacancy');
 const Vacancy = require('../models/vacancy');
 
 class vacancyController {
@@ -15,6 +16,9 @@ class vacancyController {
         incentives,
         skills,
         benefits,
+        city,
+        state,
+        zipCode,
       } = req.body;
       const vacancy = new Vacancy({
         status: status,
@@ -30,7 +34,10 @@ class vacancyController {
         incentives,
         skills,
         benefits,
-      });
+        city,
+        state,
+        zipCode,
+      })    ;
       await vacancy.save();
       req.company.vacancies.push(vacancy._id)
       await req.company.save()
@@ -45,10 +52,11 @@ class vacancyController {
     try {
       const limit = parseInt(req.query.limit);
       const skip = parseInt(req.query.skip);
+
       if (!skip || !limit) {
         res.status(400).json({ error: 'Internal error' })
       }
-      const vacancies = await Vacancy.find({ status: 'Active' }).skip(skip).limit(limit)
+      const vacancies = await Vacancy.find({}).skip(skip).limit(limit)
 
       res.status(200).json({ result: vacancies });
     } catch (e) {
@@ -64,12 +72,12 @@ class vacancyController {
     } catch (e) {
       console.log(e);
       res.status(500).json({ error: e.message });
-    }
+    } 
   }
 
   async updateVacancy(req, res) {
     try {
-      let candidate = await Vacancy.findById(req.body.vacancy);
+      let candidate = await Vacancy.findOne(req.body.vacancy);
       if (!candidate) {
         res.status(400).json({ error: 'Internal error' });
       }
@@ -152,13 +160,7 @@ class vacancyController {
   }
 
 }
-// class vacancyPagination {
-//   getAll(limit = 0, skip = 0) {
-//       return vacancy.find({})  // You may want to add a query
-//                       .skip(skip) // Always apply 'skip' before 'limit'
-//                       .limit(limit) // This is your 'page size'
-//   } 
-// } 
+ 
 
 
 module.exports = new vacancyController();

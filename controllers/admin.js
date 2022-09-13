@@ -2,7 +2,8 @@ require('dotenv').config();
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const SECRET = process.env.secretkeyadm;
+const SECRET = process.env.SECRET;
+
 const Admin = require('../models/admin');
 
 //access token
@@ -14,21 +15,18 @@ const generateUserToken = (id) => {
 class authController {
   async whoAmI(req, res) {
     try {
-      const admin = await Admin.findOne({ _id: req.admin._id }, '-password -__v')
-      if (!admin) {
-        res.status(400).json({ error: 'Internal error' });
-      }
-      res.status(200).json({ result: admin });
+      const user = await Admin.findOne({_id: String(req.admin._id)})
+      res.status(200).json({ result: user });
     } catch (e) {
       console.log(e);
       res.status(500).json({ error: e.message });
     }
   }
-
+ 
   //сюди
   async register(req, res) {
     try {
-      if (req.headers['secretkeyadm'] != '1234567') {
+      if (req.headers['secretkey'] != SECRET) {
         return res
           .status(400)
           .json({ message: 'Invalid secret key' });
@@ -47,7 +45,7 @@ class authController {
       //hash password
       const salt = await bcrypt.genSalt(10);
       const passwordHashed = await bcrypt.hash(password, salt);
-      const token = generateVerifToken(email);
+      
 
       //create user
       const admin = new Admin({
@@ -66,14 +64,11 @@ class authController {
   async login(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await Admin.findOne({ email });
+      const user = await Admin.findOne({ email: email });
       if (!user) {
         res
           .status(403)
           .json({ error: "Internal error" });
-      }
-      if (!user.verified) {
-        res.status(403).json({ error: "Internal error" })
       }
       const passwordCheck = await bcrypt.compare(password, user.password);
       if (!passwordCheck) {
@@ -99,7 +94,7 @@ class authController {
   async getTicketById(req, res) {
     try {
       const ticket = await Ticket.findOne({ _id: req.query.id })
-      if (!ticketn) {
+      if (!ticket) {
         res.status(400).json({ error: "Internal error" })
       }
       res.status(200).json({ result: ticket })

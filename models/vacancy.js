@@ -1,5 +1,4 @@
-const { model, Schema } = require('mongoose');
-
+const { model, Schema } = require('mongoose')
 const Vacancy = new Schema(
   {
     companyName: { type: String, required: true },
@@ -16,6 +15,9 @@ const Vacancy = new Schema(
     incentives: [String],
     skills: [String],
     benefits: [String],
+    city: String,
+    state: String,
+    zipCode: Number,
   },
   { timestamps: true }
 );

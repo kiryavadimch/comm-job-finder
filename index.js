@@ -33,29 +33,29 @@ app.use(morgan('common'));
 const URI = process.env.URL;
 const PORT = process.env.PORT;
 
-const authRouter = require('./routers/auth');
-const articleRouter = require('./routers/article');
-const vacancyRouter = require('./routers/vacancy');
+const authRouter = require('./routers/auth')
+const articleRouter = require('./routers/article')
+const vacancyRouter = require('./routers/vacancy')
 const helpRouter = require('./routers/help')
 const filesRouter = require('./routers/files')
-const sportVacancyRouter = require('./routers/sportvacancy');
-
+const sportVacancyRouter = require('./routers/sportvacancy')
 const profileRouter = require('./routers/profile')
+const adminAuthRouter = require('./routers/adminAuth')
 const subscriptionsRouter = require('./routers/subscriptions')
-
+const LookingToRouter = require('./routers/LookingToV')
 
 app.use('/subscriptions', subscriptionsRouter)
 app.use('/profile', profileRouter)
-app.use('/auth', authRouter);
+app.use('/auth', authRouter)
 app.use('/articles', articleRouter)
 app.use('/vacancy', vacancyRouter) 
 app.use('/profile',profileRouter)      
-
-app.use('/sportVacancy', sportVacancyRouter);
+app.use('/adminAuth',adminAuthRouter)    
+app.use('/sportVacancy', sportVacancyRouter)
 app.use('/help', helpRouter)
 app.use('/files', filesRouter)
-
-const start = async () => {
+app.use('/LookingToV', LookingToRouter)
+const start = async () => { 
   try {
     await mongoose.connect(
       URI,

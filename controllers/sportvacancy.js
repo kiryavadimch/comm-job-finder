@@ -58,8 +58,8 @@ class sportvacancyController {
 
   async getSportVacanciesWithDraws(req, res) {
     try {
-      const vacancies = await SportVacancy.find({});
-      res.status(200).json({ result: vacancies });
+      const sportvacancies = await SportVacancy.find({});
+      res.status(200).json({ result: sportvacancies });
     } catch (e) {
       console.log(e);
       res.status(500).json({ error: e.message });
@@ -68,7 +68,7 @@ class sportvacancyController {
 
   async updateSportVacancy(req, res) {
     try {
-      let candidate = await SportVacancy.findById(req.body.sportvacancy);
+      let candidate = await SportVacancy.findOne(req.body.sportvacancy);
       if (!candidate) {
         res.status(400).json({ error: 'Internal error' });
       }
@@ -94,7 +94,7 @@ class sportvacancyController {
   async setStatus(req, res) {
     try {
       const sportvacancy = await SportVacancy.findOne({ _id: req.body.id });
-      if (!vacancy) {
+      if (!sportvacancy) {
         res.status(400).json({ error: 'Internal error' });
       }
       sportvacancy.status = req.body.status;
