@@ -37,7 +37,7 @@ class vacancyController {
         city,
         state,
         zipCode,
-      })    ;
+      });
       await vacancy.save();
       req.company.vacancies.push(vacancy._id)
       await req.company.save()
@@ -65,6 +65,27 @@ class vacancyController {
     }
   }
 
+  async getVacanciesByFilters(req, res) {       //zipCode/City/State
+    try {
+      let params = {}
+      req.query.city ? console.log('city = ', req.query.city) : {}
+      req.query.zipCode ? console.log('zipCode = ', req.query.zipCode) : {}
+      req.query.state ? console.log('state = ', req.query.state) : {}
+
+      req.query.zipCode ? params.zipCode = { $regex: req.query.zipCode, $options: 'i' } : {}
+      req.query.state ? params.state = { $regex: req.query.state, $options: 'i' } : {}
+      req.query.city ? params.city = { $regex: req.query.city, $options: 'i' } : {}
+
+      console.log(params)
+      const vacancies = await Vacancy.find(params)
+
+      res.status(200).json({ result: vacancies });
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ error: e.message });
+    }
+  }
+
   async getVacanciesWithDraws(req, res) {
     try {
       const vacancies = await Vacancy.find({});
@@ -72,7 +93,7 @@ class vacancyController {
     } catch (e) {
       console.log(e);
       res.status(500).json({ error: e.message });
-    } 
+    }
   }
 
   async updateVacancy(req, res) {
@@ -160,7 +181,7 @@ class vacancyController {
   }
 
 }
- 
+
 
 
 module.exports = new vacancyController();

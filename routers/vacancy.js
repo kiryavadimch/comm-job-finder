@@ -14,6 +14,6 @@ router.post('/setStatus', controller.setStatus);
 router.post('/volunteer/addToFavorite', permission_volunteer, controller.addToFavorite)
 router.delete('/volunteer/removeFromFavorite', permission_volunteer, controller.removeFromFavorite)
 router.get('/volunteer/getFavorites', permission_volunteer, controller.getFavorites)
-
+router.get('/getVacanciesByFilters', controller.getVacanciesByFilters);
 module.exports = router;
       

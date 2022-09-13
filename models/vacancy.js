@@ -17,7 +17,7 @@ const Vacancy = new Schema(
     benefits: [String],
     city: String,
     state: String,
-    zipCode: Number,
+    zipCode: String
   },
   { timestamps: true }
 );
